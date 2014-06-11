@@ -10,7 +10,7 @@ import argparse
 import subprocess
 import os
 import sys
-import shutil
+import time
 
 
 if __name__ == '__main__':
@@ -42,6 +42,11 @@ if __name__ == '__main__':
                     if kwargs['verbose']: print 'Omitting hidden file "%s"' % (path, )
                     continue
                 
+                statbuf = os.stat(path)
+                if time.time() - statbuf.st_mtime < 60:   # file has to be unchanged for a minute
+                    if kwargs['verbose']: print 'Omitting recently changed file "%s"' % (path, )
+                    continue
+                     
                 S3_key_name = '/' + os.path.join(root.replace(full_source_path, ''), kwargs['prefix'],file_name).strip('/')
     
                 command = ['s3cmd', 'put', path, 'S3://'+kwargs['bucket']+S3_key_name]
