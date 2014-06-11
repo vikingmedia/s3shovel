@@ -58,7 +58,7 @@ if __name__ == '__main__':
                 if kwargs['verbose']: print ' '.join(command)
                 
                 if not kwargs['dryrun']:
-                    if subprocess.call(' '.join(command), shell=True) != 0:
+                    if subprocess.call(command) != 0:
                         sys.exit('Aborting due to error!')
                     
                 if kwargs['verbose']: print 'Deleting "%s"' % (path, )
