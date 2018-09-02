@@ -58,11 +58,11 @@ if __name__ == '__main__':
                 if kwargs['verbose']: print ' '.join(command)
                 
                 if not kwargs['dryrun']:
-                    if subprocess.call(command) != 0:
-                        sys.exit('Aborting due to error!')
-                    
-                if kwargs['verbose']: print 'Deleting "%s"' % (path, )
-                if not kwargs['dryrun']: os.remove(path)
+                    if subprocess.call(command) == 0:
+                        if kwargs['verbose']: print 'Deleting "%s"' % (path, )
+                        if not kwargs['dryrun']: os.remove(path)
+                    else:
+                        print 'warning: non-zero error code'
                 
             if not kwargs['recursive']: break
     
